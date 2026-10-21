@@ -738,22 +738,20 @@ function render(justHatched){
 
 async function loadLeetcodeState(){
   try{
-    const res = await window.storage.get(LEET_KEY, false);
-    if(res && res.value){
-      const parsed = JSON.parse(res.value);
+    const saved = localStorage.getItem(LEET_KEY);
+    if(saved){
+      const parsed = JSON.parse(saved);
       leetcodeState = {
         easy: parsed.easy||0, medium: parsed.medium||0, hard: parsed.hard||0,
         dates: Array.isArray(parsed.dates) ? parsed.dates : [],
       };
     }
-  }catch(e){
-    // no saved log yet — start fresh
-  }
+  }catch(e){}
 }
 
 async function saveLeetcodeState(){
   try{
-    await window.storage.set(LEET_KEY, JSON.stringify(leetcodeState), false);
+    localStorage.setItem(LEET_KEY, JSON.stringify(leetcodeState));
   }catch(e){
     console.error('Could not save LeetCode log', e);
   }
